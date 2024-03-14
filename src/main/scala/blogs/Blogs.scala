@@ -1,0 +1,16 @@
+package blogs
+
+final class Blogs {
+
+
+  def get = ???
+
+  def getById()= ???
+
+  def post() = ???
+
+  def patch() = ???
+
+  def delete() = ???
+
+}
