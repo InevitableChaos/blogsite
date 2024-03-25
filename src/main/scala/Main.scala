@@ -1,34 +1,32 @@
-import blogs.Routes
+import blogs.{BlogModule, BlogRepository, BlogRoutes}
 import akka.actor.typed.ActorSystem
-import akka.actor.typed.scaladsl.{Behaviors => Behaviours}
+import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.path
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
+import handles.{Akka, Mongo}
+
 import scala.io.StdIn
 
-final class Main extends Routes {
+final class Main {
   def start(): Unit = {
-    implicit val system = ActorSystem(Behaviours.empty, "My-Blogsite")
+    implicit val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "My-Blogsite")
     implicit val executionContext = system.executionContext
 
-    val bindingFuture =
-      Http()
-        .newServerAt("localhost", 8080)
-        .bind(routes)
-    println("Server is running.")
-    StdIn.readLine()
+    for {
+      //_ <- Future(Unit)
+      //blogRepository = BlogRepository(mongo.client, mongo.database)
+      //blogModule     = BlogModule(blogRepository)
+      //blogRoutes     = BlogRoutes(blogModule)
+      akka           = new Akka(blogRoutes)
 
-    bindingFuture
-      .flatMap(_.unbind())
-      .onComplete(_ => system.terminate())
+    } yield akka.
   }
 }
 
 object Main extends App {
-   private def run: Unit = {
-    new Main()
-      .start()
-  }
-
-  run
+  new Main()
+    .start()
 }

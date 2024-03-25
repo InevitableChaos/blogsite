@@ -2,6 +2,8 @@ package blogs
 
 import akka.http.scaladsl.server.Directives._
 
+import scala.concurrent.ExecutionContext
+
 /**
  * List of routes I need:
  * GET:
@@ -17,16 +19,18 @@ import akka.http.scaladsl.server.Directives._
  * Delete:
  * - By Id.
  */
-class Routes extends NameFunctions {
-  val routes = pathPrefix("v1") {
+final case class BlogRoutes(module: BlogModule)(implicit ec: ExecutionContext)  {
+  /* val r = pathPrefix("v1") {
     pathPrefix("FoodBlogs") {
       pathPrefix("blogs") {
         get {
           pathEndOrSingleSlash {
-            complete()
+            parameter("author") { author =>
+              //onComplete(module.getAll(author))
+            }
           } ~
           path(JavaUUID) { id =>
-            complete(???)
+            .onComplete(module.getById(id))
           }
         } ~
         post {
@@ -40,5 +44,5 @@ class Routes extends NameFunctions {
         }
       }
     }
-  }
+  }*/
 }
